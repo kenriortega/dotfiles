@@ -23,10 +23,9 @@ export VISUAL=nvim
 export EDITOR=nvim
 export GIT_EDITOR=nvim
 
-alias docker_stop_all='docker stop $(docker ps -a -q)'
-alias docker_rm_all='docker rm $(docker ps -a -q)'
+alias docker_stop_all='podman stop $(docker ps -a -q)'
+alias docker_rm_all='podman rm $(docker ps -a -q)'
 
-alias json_prettify="python -m json.tool"
 countloc() {
     if [ -z $1 ]; then
         echo "Usage: ${FUNCNAME[0]} <filetype>"
@@ -36,49 +35,15 @@ countloc() {
     find . -name "*.$1" | xargs wc -l
 }
 
-if [ $ARCH = 'Darwin' ]; then
-    # use emacs key bindings for the terminal
-    set -o emacs
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+eval "$(starship init bash)"
 
-    alias chrome="open -a \"Google Chrome\""
+export PATH=$PATH:/usr/local/go/bin
+export PATH="$PATH:$(go env GOPATH)/bin"
 
-    # make macos use openssl for cpp compiles
-    export LDFLAGS="-L/usr/local/opt/openssl/lib"
-    export CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/include -L/usr/local/lib"
-    export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
-
-    precmd() { eval "$PROMPT_COMMAND" }
-fi
-
-# run gdb until program bombs & print stack trace
-alias gdb_trace="gdb --batch --ex r --ex bt --ex q --args"
-
-# Setup go environment
-PATH=$PATH:/usr/local/go/bin
-PATH=$PATH:~/prg/go/bin
-export GOPATH=$HOME/prg/go
-
-export FZF_DEFAULT_OPTS='
---color fg:252,bg:233,hl:#ff8787,fg+:252,bg+:235,hl+:#ff0000
---color info:144,prompt:161,spinner:135,pointer:135,marker:118'
-
-# make prompt appear above cursor
-HOST_CLR='\033[1;49;92m'
-
-# make prompt colorful
-if [ $ARCH = 'Darwin' ]; then
-    DIR_CLR='\033[1;38;5;208m'
-else 
-    DIR_CLR='\033[1;34m'
-fi
-
-NC='\033[0m'
-
-PROMPT_COMMAND='echo -e "${HOST_CLR}$(whoami)@kingslanding${NC}:${DIR_CLR}$(dirs)${NC}"'
-PS1='$ '
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+. "$HOME/.cargo/env"
+export PATH="/home/qwerty/.local/share/solana/install/active_release/bin:$PATH"
 
 if [[ ! $TERM =~ screen ]]; then
     tmux && exit
