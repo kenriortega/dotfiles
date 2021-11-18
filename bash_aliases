@@ -43,9 +43,11 @@ export PATH=$PATH:/usr/local/go/bin
 export PATH="$PATH:$(go env GOPATH)/bin"
 
 . "$HOME/.cargo/env"
-export PATH="/home/qwerty/.local/share/solana/install/active_release/bin:$PATH"
 
-if [[ ! $TERM =~ screen ]]; then
-    tmux && exit
+# Powerline configuration
+if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
+  powerline-daemon -q
+  POWERLINE_BASH_CONTINUATION=1
+  POWERLINE_BASH_SELECT=1
+  source /usr/share/powerline/bindings/bash/powerline.sh
 fi
-
