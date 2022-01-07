@@ -6,9 +6,6 @@ MYDIR="$(dirname -- "$0")"
 # .vimrc install
 cp $MYDIR/vimrc ~/.vimrc
 
-# .vim install
-rm -rf ~/.vim || true
-cp -r $MYDIR/vim ~/.vim
 
 mkdir -p ~/.config
 
@@ -23,8 +20,5 @@ cp $MYDIR/bash_aliases ~/.bash_aliases
 # apply bash aliases for zsh as well
 echo "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" >> ~/.bashrc
 
-# Install coc extensions
-vim -c 'CocInstall -sync coc-json coc-html coc-css coc-tsserver coc-prettier coc-go coc-styled-components coc-graphql' +qall
-vim -c 'GoInstallBinaries' +qall
-
+# CMD to install lsp and other stuff
 echo "dotfiles finished installing!"
